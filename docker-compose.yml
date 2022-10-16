@@ -1,0 +1,40 @@
+version: "2.4"
+
+services:
+
+  postgresql:
+    build:
+      context: ./
+      dockerfile: ./postgresql/Dockerfile
+    container_name: postgresql
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+      - ./postgresql/script.sql:/docker-entrypoint-initdb.d/script.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: always
+
+  redis:
+    image: redis:6.2.5
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  flask:
+    build:
+      context: ./
+      dockerfile: ./flask/Dockerfile
+    container_name: flask
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./flask/app:/app
+    links:
+      - postgresql
+      - redis
+    environment:
+      - PYTHONUNBUFFERED=1
+

@@ -1,0 +1,6 @@
+flask
+flask-session
+requests
+psycopg2-binary
+alembic
+SQLAlchemy
