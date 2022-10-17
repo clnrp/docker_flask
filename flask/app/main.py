@@ -140,7 +140,6 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-
         if not email:
             flash('Email is required!')
         elif not password:
